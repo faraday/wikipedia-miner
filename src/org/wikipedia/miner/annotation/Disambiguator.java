@@ -61,14 +61,17 @@ public class Disambiguator {
 	private int maxAnchorLength = 20 ;
 	private double minLinkProbability ;
 	private int maxContextSize ;
+	
+	private String language;
 
 	/**
 	 * Initializes the Disambiguator with default parameters.
 	 * 
 	 * @param wikipedia an initialized Wikipedia instance, preferably with relatedness measures cached.
 	 * @param textProcessor an optional text processor (may be null) that will be used to alter terms before they are searched for.
+	 * @throws IOException 
 	 */
-	public Disambiguator(Wikipedia wikipedia, TextProcessor textProcessor) {
+	public Disambiguator(Wikipedia wikipedia, TextProcessor textProcessor) throws IOException {
 
 		init(wikipedia, textProcessor, 0.02, 0.03, 25) ;
 		
@@ -80,6 +83,12 @@ public class Disambiguator {
 		
 		if (!wikipedia.getDatabase().areInLinksCached())
 			System.err.println("Disambiguator | Warning: links into pages have not been cached, so this will run significantly slower than it needs to.") ;
+		
+		// read language
+		InputStream is = Disambiguator.class.getResourceAsStream("/config/language.conf");
+		BufferedReader br = new BufferedReader(new InputStreamReader(is));
+		language = br.readLine();
+		br.close();
 	}
 
 	/**

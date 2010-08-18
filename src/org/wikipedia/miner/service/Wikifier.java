@@ -63,6 +63,8 @@ public class Wikifier {
 	
 	private DecimalFormat df = new DecimalFormat("#0.000000") ;
 	
+	private String language = "english";
+	
 	/**
 	 * The type of the source document will be detected automatically
 	 */
@@ -91,6 +93,7 @@ public class Wikifier {
 	 * @param wms the servlet that hosts this service
 	 * @param tp an (optional) text processor to use for modifying how text is compared to anchors in Wikipedia.
 	 * @throws ServletException
+	 * @throws IOException 
 	 */
 	public Wikifier(WikipediaMinerServlet wms, TextProcessor tp) throws ServletException {
 		
@@ -99,7 +102,16 @@ public class Wikifier {
 		errorPage = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\"> <html><head> <title>MW Wikifier | error</title> <link rel=\"stylesheet\" href=\"css/style.css\" type=\"text/css\"></head><body><p><em>Ooops!</em></p><p>I've run into a problem while processing this document. Can you try a different one?</p></body></html>" ;
 		lostPage = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\"> <html><head> <title>MW Wikifier | error</title> <link rel=\"stylesheet\" href=\"css/style.css\" type=\"text/css\"></head><body><p><em>Ooops!</em></p><p>I couldn't find the page you wanted to wikify. Can you please check that the url is correct, or try a different one?</p></body></html>" ;
 
-		
+		// read language
+		InputStream is = Wikifier.class.getResourceAsStream("/config/language.conf");
+		try {
+			BufferedReader br = new BufferedReader(new InputStreamReader(is));
+			language = br.readLine();
+			br.close();
+		}
+		catch (IOException e1) {
+			e1.printStackTrace();
+		}
 		
 		try {	
 			disambiguator = new Disambiguator(wms.wikipedia, tp, 0.01, 0, 25) ;
@@ -108,13 +120,14 @@ public class Wikifier {
 			throw new ServletException("WikipediaMiner | could not retrieve disambiguation model for wikification (" + wms.context.getInitParameter("wikifier_disambigModel") + ")") ;
 		}
 		
-		File stopwordFile = null;
-		if ( wms.context.getInitParameter("stopword_file") != null) {
-			stopwordFile = new File(wms.context.getInitParameter("stopword_file")) ;
-		}
+//		File stopwordFile = null;
+//		if ( wms.context.getInitParameter("stopword_file") != null) {
+//			stopwordFile = new File(wms.context.getInitParameter("stopword_file")) ;
+//		}
+		InputStream stopwordStream = Wikifier.class.getResourceAsStream("/config/"+language+"Stopwords.txt");
 
 		try {
-			topicDetector = new TopicDetector(wms.wikipedia, disambiguator, stopwordFile, true, false) ;
+			topicDetector = new TopicDetector(wms.wikipedia, disambiguator, stopwordStream, true, false) ;
 		} catch (IOException e) {
 			throw new ServletException("WikipediaMiner | could not retrieve stopwords for wikification (" + wms.context.getInitParameter("stopword_file")  + ")") ;
 		}

@@ -21,6 +21,7 @@
 package org.wikipedia.miner.model;
 import org.wikipedia.miner.util.text.*;
 import org.wikipedia.miner.util.*;
+import org.wikipedia.miner.annotation.weighting.LinkDetector;
 import org.wikipedia.miner.model.WikipediaDatabase.CachedAnchor ;
 
 import java.text.DecimalFormat;
@@ -46,6 +47,8 @@ public class Anchor implements Comparable<Anchor>{
 	
 	private SortedVector<Sense> senses ;
 	
+	 private String language = "english";
+	
 	/**
 	 * Initializes an anchor
 	 * 
@@ -53,6 +56,7 @@ public class Anchor implements Comparable<Anchor>{
 	 * @param tp a text processor which will be used to alter how the given text and Wikipedia's anchors are matched (may be null)
 	 * @param wd an active WikipediaDatabase
 	 * @throws SQLException if there is a problem with the Wikipedia database
+	 * @throws IOException 
 	 */
 	public Anchor(String text, TextProcessor tp, WikipediaDatabase wd) throws SQLException {
 
@@ -60,6 +64,17 @@ public class Anchor implements Comparable<Anchor>{
 		this.tp = tp ;
 		
 		this.text = text ;
+		
+		// read language
+		InputStream is = Anchor.class.getResourceAsStream("/config/language.conf");
+		try {
+			BufferedReader br = new BufferedReader(new InputStreamReader(is));
+			language = br.readLine();
+			br.close();
+		}
+		catch (IOException e1) {
+			e1.printStackTrace();
+		}
 		
 		if (wd.areAnchorsCached(tp))
 			initializeFromCache() ;
@@ -266,8 +281,9 @@ public class Anchor implements Comparable<Anchor>{
 	 * @param anchor the anchor to which this should be compared.
 	 * @return see above.
 	 * @throws SQLException if there is a problem with the Wikipedia database.
+	 * @throws IOException 
 	 */
-	public double getRelatednessTo(Anchor anchor) throws SQLException{
+	public double getRelatednessTo(Anchor anchor) throws SQLException, IOException{
 		
 		Cleaner cleaner = null ;
 				

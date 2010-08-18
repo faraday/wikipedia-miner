@@ -20,6 +20,7 @@
 package org.wikipedia.miner.model;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.*;
 import java.util.*;
@@ -173,8 +174,9 @@ public class Wikipedia {
 	 * 
 	 * @throws SQLException if there is a problem with the Wikipedia database, or if it has not been prepared
 	 * for the given text processor.
+	 * @throws IOException 
 	 */
-	public Article getMostLikelyArticle(String term, TextProcessor tp) throws SQLException{
+	public Article getMostLikelyArticle(String term, TextProcessor tp) throws SQLException, IOException{
 
 		if (tp != null)
 			database.checkTextProcessor(tp) ;
@@ -215,8 +217,9 @@ public class Wikipedia {
 	 * @return the SortedVector of all relevant Articles, ordered by commoness of the link being made.
 	 * 
 	 * @throws SQLException if there is a problem with the Wikipedia database
+	 * @throws IOException 
 	 */
-	public SortedVector<Article> getWeightedArticles(String term, TextProcessor tp) throws SQLException{
+	public SortedVector<Article> getWeightedArticles(String term, TextProcessor tp) throws SQLException, IOException{
 
 		Anchor anch = new Anchor(term, tp, database) ;
 
@@ -254,8 +257,9 @@ public class Wikipedia {
 	 * @return the SortedVector of all relevant Articles, ordered how well-known they are and how they relate to context articles.
 	 * 
 	 * @throws SQLException if there is a problem with the wikipedia database
+	 * @throws IOException 
 	 */
-	public SortedVector<Article> getWeightedArticles(String term, TextProcessor tp, Collection<Article> contextArticles) throws SQLException{
+	public SortedVector<Article> getWeightedArticles(String term, TextProcessor tp, Collection<Article> contextArticles) throws SQLException, IOException{
 
 		Anchor anch = new Anchor(term, tp, database) ;
 		SortedVector<Anchor.Sense> senses = anch.getSenses() ;
@@ -307,8 +311,9 @@ public class Wikipedia {
 	 * @return the SortedVector of all relevant Articles, ordered by commonness of the link being made and relatedness to context articles.
 	 * 
 	 * @throws SQLException if there is a problem with the wikipedia database
+	 * @throws IOException 
 	 */
-	public SortedVector<Article> getWeightedArticles(String term, TextProcessor tp, String[] contextTerms) throws SQLException{
+	public SortedVector<Article> getWeightedArticles(String term, TextProcessor tp, String[] contextTerms) throws SQLException, IOException{
 		System.out.print(" - context: " ) ;
 		Vector<Article> contextArticles = new Vector<Article>() ;
 

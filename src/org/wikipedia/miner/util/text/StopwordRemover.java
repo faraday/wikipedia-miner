@@ -39,11 +39,11 @@ public class StopwordRemover extends TextProcessor {
 	 * @param	stopwordFile	the file of stopwords
 	 * @throws	IOException		if there is a problem reading from the file of stopwords
 	 */	
-	public StopwordRemover(File stopwordFile) throws IOException {
+	public StopwordRemover(InputStream stopwordFile) throws IOException {
 		
 		stopwords = new HashSet<String>() ;
 		
-		BufferedReader input = new BufferedReader(new FileReader(stopwordFile)) ;
+		BufferedReader input = new BufferedReader(new InputStreamReader(stopwordFile)) ;
 		
 		String line ;
 		while ((line = input.readLine()) != null) {

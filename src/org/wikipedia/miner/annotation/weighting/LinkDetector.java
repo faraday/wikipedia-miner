@@ -57,10 +57,13 @@ public class LinkDetector extends TopicWeighter{
 	private Instances header ;
 	private Classifier classifier ;
 	
+	private static String language;
+	
 	/**
 	 * @param wikipedia
+	 * @throws IOException 
 	 */
-	public LinkDetector(Wikipedia wikipedia) {
+	public LinkDetector(Wikipedia wikipedia) throws IOException {
 		this.wikipedia = wikipedia ;
 		this.cleaner = new ArticleCleaner() ;
 		
@@ -87,6 +90,11 @@ public class LinkDetector extends TopicWeighter{
 		header.setClassIndex(header.numAttributes() -1) ;
 		
 
+		// read language
+		InputStream is = LinkDetector.class.getResourceAsStream("/config/language.conf");
+		BufferedReader br = new BufferedReader(new InputStreamReader(is));
+		language = br.readLine();
+		br.close();
 	}
 	
 	/**
@@ -443,7 +451,8 @@ public class LinkDetector extends TopicWeighter{
 		//use a text processor, so that terms and items in wikipedia will both be case-folded before being compared.
 		TextProcessor tp = new CaseFolder() ;
 		
-		File stopwordFile = new File("/research/wikipediaminer/data/stopwords.txt") ;
+		// File stopwordFile = new File("/research/wikipediaminer/data/stopwords.txt") ;
+		InputStream stopwordStream = LinkDetector.class.getResourceAsStream("/config/"+language+"Stopwords.txt");
 		
 		// cache tables that will be used extensively
 		File dataDirectory = new File("/research/wikipediaminer/data/en/20080727") ;
@@ -467,7 +476,7 @@ public class LinkDetector extends TopicWeighter{
 		disambiguator.loadClassifier(new File("data/models/disambig.model")) ;
 		
 		// connect disambiguator to a new topic detector
-		TopicDetector topicDetector = new TopicDetector(wikipedia, disambiguator, stopwordFile, true, false) ;
+		TopicDetector topicDetector = new TopicDetector(wikipedia, disambiguator, stopwordStream, true, false) ;
 		
 		// train a new link detector		
 		LinkDetector linkDetector = new LinkDetector(wikipedia) ;

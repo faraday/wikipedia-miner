@@ -20,11 +20,16 @@
 
 package org.wikipedia.miner.service;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.sql.SQLException;
 import java.util.*;
 
 import org.w3c.dom.*;
 
+import org.wikipedia.miner.annotation.weighting.LinkDetector;
 import org.wikipedia.miner.model.*;
 import org.wikipedia.miner.model.Article.AnchorText;
 import org.wikipedia.miner.util.*;
@@ -43,12 +48,26 @@ public class Searcher {
 		
 	private int defaultMaxLinkCount = 250 ;
 	private int defaultMaxSenseCount = 25 ;
+	
+	private String language = "english";
 
 	/**
 	 * @param wms the servlet that hosts this service
+	 * @throws IOException 
 	 */
 	public Searcher(WikipediaMinerServlet wms) {
 		this.wms = wms ;
+		
+		// read language
+		InputStream is = Searcher.class.getResourceAsStream("/config/language.conf");
+		try {
+			BufferedReader br = new BufferedReader(new InputStreamReader(is));
+			language = br.readLine();
+			br.close();
+		}
+		catch (IOException e1) {
+			e1.printStackTrace();
+		}
 	}
 	
 	/**

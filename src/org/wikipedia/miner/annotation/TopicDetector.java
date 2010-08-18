@@ -60,7 +60,7 @@ public class TopicDetector {
 	 * @param allowDisambiguations 
 	 * @throws IOException 
 	 */
-	public TopicDetector(Wikipedia wikipedia, Disambiguator disambiguator, File stopwordFile, boolean strictDisambiguation, boolean allowDisambiguations) throws IOException {
+	public TopicDetector(Wikipedia wikipedia, Disambiguator disambiguator, InputStream stopwordFile, boolean strictDisambiguation, boolean allowDisambiguations) throws IOException {
 		this.wikipedia = wikipedia ;
 		this.disambiguator = disambiguator ;
 		
@@ -69,7 +69,7 @@ public class TopicDetector {
 		
 		this.stopwords = new HashSet<String>() ;
 		if (stopwordFile != null) {
-			BufferedReader input = new BufferedReader(new FileReader(stopwordFile)) ;
+			BufferedReader input = new BufferedReader(new InputStreamReader(stopwordFile)) ;
 			String line ;
 			while ((line=input.readLine()) != null) 
 				stopwords.add(line.trim()) ;			

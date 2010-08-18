@@ -19,10 +19,15 @@
 
 package org.wikipedia.miner.service;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.*;
 
 import org.w3c.dom.*;
 
+import org.wikipedia.miner.annotation.weighting.LinkDetector;
 import org.wikipedia.miner.model.*;
 import org.wikipedia.miner.util.*;
 import org.wikipedia.miner.util.text.*;
@@ -39,13 +44,27 @@ public class Comparer {
 	
 	private boolean defaultShowDetails = false ;
 	private int defaultMaxLinkCount = 250 ;
+	
+	private String language = "english";
 
 	/**
 	 * Initializes a new Comparer
 	 * @param wms the servlet that hosts this service
+	 * @throws IOException 
 	 */
 	public Comparer(WikipediaMinerServlet wms) {
 		this.wms = wms;
+		
+		// read language
+		InputStream is = Comparer.class.getResourceAsStream("/config/language.conf");
+		try {
+			BufferedReader br = new BufferedReader(new InputStreamReader(is));
+			language = br.readLine();
+			br.close();
+		}
+		catch (IOException e1) {
+			e1.printStackTrace();
+		}
 	}
 	
 	/**

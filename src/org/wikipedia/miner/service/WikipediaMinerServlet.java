@@ -65,11 +65,23 @@ public class WikipediaMinerServlet extends HttpServlet {
 	DOMParser parser = new DOMParser() ;
 	protected Document doc = new DocumentImpl();
 	protected DecimalFormat df = new DecimalFormat("#0.000000") ;
+	
+	private String language = "english";
 
 
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
 		context = config.getServletContext() ;
+		
+		// read language
+		InputStream is = Wikifier.class.getResourceAsStream("/config/language.conf");
+		try {
+			BufferedReader br = new BufferedReader(new InputStreamReader(is));
+			language = br.readLine();
+			br.close();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 
 		TextProcessor tp = new CaseFolder() ; 
 

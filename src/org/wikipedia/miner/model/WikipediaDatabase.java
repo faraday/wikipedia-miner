@@ -27,6 +27,7 @@ import java.util.regex.Pattern;
 
 import gnu.trove.* ;
 
+import org.wikipedia.miner.annotation.weighting.LinkDetector;
 import org.wikipedia.miner.util.*;
 import org.wikipedia.miner.util.text.*;
 
@@ -61,6 +62,8 @@ public class WikipediaDatabase extends MySqlDatabase {
 	protected TIntObjectHashMap<int[]> cachedParentIds = null ;
 	
 	private TextProcessor cachedProcessor = null ;
+	
+	private String language;
 		
 	/**
 	 * Initializes a newly created WikipediaDatabase and attempts to make a connection to the mysql
@@ -76,6 +79,12 @@ public class WikipediaDatabase extends MySqlDatabase {
 	public WikipediaDatabase(String server, String databaseName, String userName, String password) throws Exception{
 		
 		super(server, databaseName, userName, password, "utf8") ;
+		
+		// read language
+		InputStream is = WikipediaDatabase.class.getResourceAsStream("/config/language.conf");
+		BufferedReader br = new BufferedReader(new InputStreamReader(is));
+		language = br.readLine();
+		br.close();
 		
 		createStatements = new HashMap<String,String>() ;
 		
