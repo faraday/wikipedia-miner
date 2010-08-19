@@ -6,7 +6,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import org.wikipedia.miner.model.Wikipedia;
-import org.wikipedia.miner.util.text.CaseFolder;
+import org.wikipedia.miner.util.text.CustomProcessorChain;
 
 public class PrepareProcessor {
 
@@ -29,7 +29,7 @@ public class PrepareProcessor {
 		}
 						
 		//prepare text processors
-		wikipedia.getDatabase().prepareForTextProcessor(new CaseFolder()) ;
+		wikipedia.getDatabase().prepareForTextProcessor(new CustomProcessorChain(language)) ;
 						
 		//cache definitions (only worth doing if you will be using them a lot - will take a day or so)
 		// wikipedia.getDatabase().summarizeDefinitions() ;

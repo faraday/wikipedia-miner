@@ -29,7 +29,6 @@ import java.util.*;
 
 import org.w3c.dom.*;
 
-import org.wikipedia.miner.annotation.weighting.LinkDetector;
 import org.wikipedia.miner.model.*;
 import org.wikipedia.miner.model.Article.AnchorText;
 import org.wikipedia.miner.util.*;

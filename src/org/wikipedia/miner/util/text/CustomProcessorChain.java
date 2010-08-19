@@ -5,6 +5,8 @@ import java.io.InputStream;
 public class CustomProcessorChain extends TextProcessorChain {
 	
 	public CustomProcessorChain(String language) {        
+		super();
+		
         InputStream is = CustomProcessorChain.class.getResourceAsStream("/config/"+language+"Stopwords.txt");
 
         try {

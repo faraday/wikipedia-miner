@@ -27,7 +27,6 @@ import java.util.regex.Pattern;
 
 import gnu.trove.* ;
 
-import org.wikipedia.miner.annotation.weighting.LinkDetector;
 import org.wikipedia.miner.util.*;
 import org.wikipedia.miner.util.text.*;
 
@@ -93,33 +92,33 @@ public class WikipediaDatabase extends MySqlDatabase {
 				+ "page_title varchar(255) binary NOT NULL, "
 				+ "page_type int(2) NOT NULL default '0', "
 				+ "PRIMARY KEY  (page_id),"
-				+ "UNIQUE KEY type_title (page_type,page_title)) ENGINE=MyISAM DEFAULT CHARSET=utf8;") ;
+				+ "UNIQUE KEY type_title (page_type,page_title)) ENGINE=MyISAM DEFAULT CHARSET=binary;") ;
 		
 		createStatements.put("redirect", "CREATE TABLE redirect (" 
 				+ "rd_from int(8) unsigned NOT NULL, "
 				+ "rd_to int(8) unsigned NOT NULL, "
 				+ "PRIMARY KEY (rd_from, rd_to),"
-				+ "KEY rd_to (rd_to)) ENGINE=MyISAM DEFAULT CHARSET=utf8;") ;
+				+ "KEY rd_to (rd_to)) ENGINE=MyISAM DEFAULT CHARSET=binary;") ;
 		
 		/*
 		createStatements.put("pagelink", "CREATE TABLE pagelink (" 
 				+ "pl_from int(8) unsigned NOT NULL, "
 				+ "pl_to int(8) unsigned NOT NULL, "
 				+ "PRIMARY KEY (pl_from, pl_to), "
-				+ "KEY pl_to (pl_to)) ENGINE=MyISAM DEFAULT CHARSET=utf8;") ;
+				+ "KEY pl_to (pl_to)) ENGINE=MyISAM DEFAULT CHARSET=binary;") ;
 		*/
 		
 		createStatements.put("categorylink", "CREATE TABLE categorylink (" 
 				+ "cl_parent int(8) unsigned NOT NULL, "
 				+ "cl_child int(8) unsigned NOT NULL, "
 				+ "PRIMARY KEY (cl_parent, cl_child), "
-				+ "KEY cl_child (cl_child)) ENGINE=MyISAM DEFAULT CHARSET=utf8;") ;		  
+				+ "KEY cl_child (cl_child)) ENGINE=MyISAM DEFAULT CHARSET=binary;") ;		  
 				  
 		createStatements.put("translation", "CREATE TABLE translation (" 
 				+ "tl_id int(8) unsigned NOT NULL, "
 				+ "tl_lang varchar(10) binary NOT NULL, "
 				+ "tl_text varchar(255) binary NOT NULL, "
-				+ "PRIMARY KEY (tl_id, tl_lang)) ENGINE=MyISAM DEFAULT CHARSET=utf8;") ;
+				+ "PRIMARY KEY (tl_id, tl_lang)) ENGINE=MyISAM DEFAULT CHARSET=binary;") ;
 	  
 		createStatements.put("disambiguation", "CREATE TABLE disambiguation (" 
 				+ "da_from int(8) unsigned NOT NULL, "
@@ -127,58 +126,58 @@ public class WikipediaDatabase extends MySqlDatabase {
 				+ "da_index int(3) unsigned NOT NULL, "
 				+ "da_scope mediumblob NOT NULL, "
 				+ "PRIMARY KEY (da_from, da_to), "
-				+ "KEY da_to (da_to)) ENGINE=MyISAM DEFAULT CHARSET=utf8;") ;	 
+				+ "KEY da_to (da_to)) ENGINE=MyISAM DEFAULT CHARSET=binary;") ;	 
 		
 		createStatements.put("linkcount", "CREATE TABLE linkcount (" 
 				+ "lc_id int(8) unsigned NOT NULL, "
 				+ "lc_in int(8) unsigned NOT NULL, "
 				+ "lc_out int(8) unsigned NOT NULL, "
-				+ "PRIMARY KEY (lc_id)) ENGINE=MyISAM DEFAULT CHARSET=utf8;") ;
+				+ "PRIMARY KEY (lc_id)) ENGINE=MyISAM DEFAULT CHARSET=binary;") ;
 		
 		createStatements.put("content", "CREATE TABLE content (" 
 				+ "co_id int(8) unsigned NOT NULL, "
 				+ "co_content mediumblob NOT NULL, "
-				+ "PRIMARY KEY (co_id)) ENGINE=MyISAM DEFAULT CHARSET=utf8;") ;
+				+ "PRIMARY KEY (co_id)) ENGINE=MyISAM DEFAULT CHARSET=binary;") ;
 		
 		createStatements.put("pagelink_in", "CREATE TABLE pagelink_in (" 
 				+ "li_id int(8) unsigned NOT NULL, "
 				+ "li_data mediumblob NOT NULL, "
-				+ "PRIMARY KEY (li_id)) ENGINE=MyISAM DEFAULT CHARSET=utf8;") ;
+				+ "PRIMARY KEY (li_id)) ENGINE=MyISAM DEFAULT CHARSET=binary;") ;
 		
 		createStatements.put("pagelink_out", "CREATE TABLE pagelink_out (" 
 				+ "lo_id int(8) unsigned NOT NULL, "
 				+ "lo_data mediumblob NOT NULL, "
-				+ "PRIMARY KEY (lo_id)) ENGINE=MyISAM DEFAULT CHARSET=utf8;") ;
+				+ "PRIMARY KEY (lo_id)) ENGINE=MyISAM DEFAULT CHARSET=binary;") ;
 				
 		createStatements.put("equivalence", "CREATE TABLE equivalence (" 
 				+ "eq_cat int(8) unsigned NOT NULL, "
 				+ "eq_art int(8) unsigned NOT NULL, "
 				+ "PRIMARY KEY (eq_cat), " 
-				+ "UNIQUE KEY (eq_art)) ENGINE=MyISAM DEFAULT CHARSET=utf8;") ;
+				+ "UNIQUE KEY (eq_art)) ENGINE=MyISAM DEFAULT CHARSET=binary;") ;
 		
 		createStatements.put("anchor", "CREATE TABLE anchor (" 
 				+ "an_text varchar(300) binary NOT NULL, "
 				+ "an_to int(8) unsigned NOT NULL, "
 				+ "an_count int(8) unsigned NOT NULL, "
 				+ "PRIMARY KEY (an_text, an_to), " 
-				+ "KEY (an_to)) ENGINE=MyISAM DEFAULT CHARSET=utf8;") ;
+				+ "KEY (an_to)) ENGINE=MyISAM DEFAULT CHARSET=binary;") ;
 		
 		createStatements.put("anchor_occurance", "CREATE TABLE anchor_occurance (" 
 				+ "ao_text varchar(300) binary NOT NULL, "
 				+ "ao_linkCount int(8) unsigned NOT NULL, "
 				+ "ao_occCount int(8) unsigned NOT NULL, "
-				+ "PRIMARY KEY (ao_text)) ENGINE=MyISAM DEFAULT CHARSET=utf8;") ;
+				+ "PRIMARY KEY (ao_text)) ENGINE=MyISAM DEFAULT CHARSET=binary;") ;
 		
 		createStatements.put("stats", "CREATE TABLE stats (" 
 						+ "st_articles int(8) unsigned NOT NULL, "
 						+ "st_categories int(8) unsigned NOT NULL, "
 						+ "st_redirects int(8) unsigned NOT NULL, "
-						+ "st_disambigs int(8) unsigned NOT NULL) ENGINE=MyISAM DEFAULT CHARSET=utf8;") ;
+						+ "st_disambigs int(8) unsigned NOT NULL) ENGINE=MyISAM DEFAULT CHARSET=binary;") ;
 		
 		createStatements.put("generality", "CREATE TABLE generality (" 
 				+ "gn_id int(8) unsigned NOT NULL, "
 				+ "gn_depth int(2) unsigned NOT NULL, "
-				+ "PRIMARY KEY (gn_id)) ENGINE=MyISAM DEFAULT CHARSET=utf8;") ; 
+				+ "PRIMARY KEY (gn_id)) ENGINE=MyISAM DEFAULT CHARSET=binary;") ; 
 		
 		try {
 			checkDatabase() ;	
@@ -232,7 +231,7 @@ public class WikipediaDatabase extends MySqlDatabase {
 		
 		stmt = createStatement() ;
 		stmt.executeUpdate("CREATE TABLE " + tableName + " (" 
-						+ "an_text varchar(500) character set latin1 collate latin1_bin NOT NULL, "
+						+ "an_text varchar(500) NOT NULL, "
 						+ "an_to int(8) unsigned NOT NULL, "
 						+ "an_count int(8) unsigned NOT NULL, "
 						+ "PRIMARY KEY (an_text, an_to), " 
@@ -345,7 +344,7 @@ public class WikipediaDatabase extends MySqlDatabase {
 		
 		stmt = createStatement() ;
 		stmt.executeUpdate("CREATE TABLE " + tableName + " (" 
-				+ "ao_text varchar(500) character set latin1 collate latin1_bin NOT NULL, "
+				+ "ao_text varchar(500) NOT NULL, "
 				+ "ao_linkCount int(8) unsigned NOT NULL, "				
 				+ "ao_occCount int(8) unsigned NOT NULL, "
 				+ "PRIMARY KEY (ao_text)) ; ") ;
@@ -1456,7 +1455,7 @@ public class WikipediaDatabase extends MySqlDatabase {
 				+ "df_id int(8) unsigned NOT NULL, "
 				+ "df_firstSentence mediumblob NOT NULL, "
 				+ "df_firstParagraph mediumblob NOT NULL, "
-				+ "PRIMARY KEY (df_id)) ENGINE=MyISAM DEFAULT CHARSET=utf8;") ;
+				+ "PRIMARY KEY (df_id)) ENGINE=MyISAM DEFAULT CHARSET=binary;") ;
 					
 		stmt.close() ;
 		

@@ -21,7 +21,6 @@
 package org.wikipedia.miner.model;
 import org.wikipedia.miner.util.text.*;
 import org.wikipedia.miner.util.*;
-import org.wikipedia.miner.annotation.weighting.LinkDetector;
 import org.wikipedia.miner.model.WikipediaDatabase.CachedAnchor ;
 
 import java.text.DecimalFormat;
@@ -47,7 +46,7 @@ public class Anchor implements Comparable<Anchor>{
 	
 	private SortedVector<Sense> senses ;
 	
-	 private String language = "english";
+	 private static String language = "english";
 	
 	/**
 	 * Initializes an anchor
@@ -395,7 +394,18 @@ public class Anchor implements Comparable<Anchor>{
 
 		BufferedReader in = new BufferedReader( new InputStreamReader( System.in ) );			
 
-		TextProcessor tp = null ; 
+		// TextProcessor tp = null ;
+		// read language
+		InputStream is = Anchor.class.getResourceAsStream("/config/language.conf");
+		try {
+			BufferedReader br = new BufferedReader(new InputStreamReader(is));
+			language = br.readLine();
+			br.close();
+		}
+		catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		TextProcessor tp = new CustomProcessorChain(language);
 
 		while (true) {
 			System.out.println("Enter a term (or press ENTER to quit): ") ;

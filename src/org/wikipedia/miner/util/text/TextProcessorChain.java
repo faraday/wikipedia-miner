@@ -150,10 +150,10 @@ public class TextProcessorChain extends TextProcessor {
      * @return	the processed version of this text.
      */
     public String processText(String text) {
-        Iterator itr = text_processor_list.iterator();
+        Iterator<TextProcessor> itr = text_processor_list.iterator();
 
         while (itr.hasNext()) {
-            text = ((TextProcessor) itr.next()).processText(text);
+            text = itr.next().processText(text);
         }
 		return text;
     }
