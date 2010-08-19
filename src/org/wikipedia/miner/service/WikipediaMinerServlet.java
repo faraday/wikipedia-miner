@@ -83,7 +83,8 @@ public class WikipediaMinerServlet extends HttpServlet {
 			e1.printStackTrace();
 		}
 
-		TextProcessor tp = new CaseFolder() ; 
+		// TextProcessor tp = new CaseFolder() ;
+		TextProcessor tp = new CustomProcessorChain(language) ;
 
 		try {
 			wikipedia = new Wikipedia(context.getInitParameter("mysql_server"), context.getInitParameter("mysql_database"), context.getInitParameter("mysql_user"), context.getInitParameter("mysql_password")) ;

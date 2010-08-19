@@ -151,7 +151,8 @@ public class Comparer {
 			return response ;
 		}
 				
-		TextProcessor tp = new CaseFolder() ;
+		// TextProcessor tp = new CaseFolder() ;
+		TextProcessor tp = new CustomProcessorChain(language) ;
 
 		Anchor anchor1 = new Anchor(term1, tp, wms.wikipedia.getDatabase()) ;
 		SortedVector<Anchor.Sense> senses1 = anchor1.getSenses() ; 

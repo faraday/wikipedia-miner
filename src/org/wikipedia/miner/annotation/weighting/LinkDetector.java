@@ -449,7 +449,8 @@ public class LinkDetector extends TopicWeighter{
 		Wikipedia wikipedia = Wikipedia.getInstanceFromArguments(args) ;
 		
 		//use a text processor, so that terms and items in wikipedia will both be case-folded before being compared.
-		TextProcessor tp = new CaseFolder() ;
+		// TextProcessor tp = new CaseFolder() ;
+		TextProcessor tp = new CustomProcessorChain(language) ;
 		
 		// File stopwordFile = new File("/research/wikipediaminer/data/stopwords.txt") ;
 		InputStream stopwordStream = LinkDetector.class.getResourceAsStream("/config/"+language+"Stopwords.txt");

@@ -146,7 +146,8 @@ public class Searcher {
 			return response ;
 		}
 		
-		TextProcessor tp = new CaseFolder() ;			
+		// TextProcessor tp = new CaseFolder() ;
+		TextProcessor tp = new CustomProcessorChain(language) ;
 		Anchor anchor = new Anchor(term, tp, wms.wikipedia.getDatabase()) ;
 		SortedVector<Anchor.Sense> senses = anchor.getSenses() ; 
 		

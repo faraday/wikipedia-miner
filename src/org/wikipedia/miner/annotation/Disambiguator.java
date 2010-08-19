@@ -62,7 +62,7 @@ public class Disambiguator {
 	private double minLinkProbability ;
 	private int maxContextSize ;
 	
-	private String language;
+	private static String language;
 
 	/**
 	 * Initializes the Disambiguator with default parameters.
@@ -616,7 +616,8 @@ public class Disambiguator {
 		Wikipedia wikipedia = Wikipedia.getInstanceFromArguments(args) ;
 		
 		//use a text processor, so that terms and items in wikipedia will both be case-folded before being compared.
-		TextProcessor tp = new CaseFolder() ;
+		//TextProcessor tp = new CaseFolder() ;
+		TextProcessor tp = new CustomProcessorChain(language) ;
 
 		//cache tables that will be used extensively
 		File dataDirectory = new File("/research/wikipediaminer/data/en/20080727") ;
