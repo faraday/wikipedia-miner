@@ -79,11 +79,6 @@
     </context-param>
 
     <context-param>
-      <param-name>stopword_file</param-name>
-      <param-value></param-value>
-    </context-param>
-
-    <context-param>
       <param-name>data_directory</param-name>
       <param-value></param-value>
     </context-param>
@@ -109,6 +104,16 @@
     <session-config>
       <session-timeout>30</session-timeout>    <!-- 30 minutes -->
     </session-config>
+
+    <!-- fix for POST request UTF-8 problem -->
+    <filter>
+        <filter-name>UTF8Filter</filter-name>
+        <filter-class>org.wikipedia.miner.service.UTF8Filter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>UTF8Filter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
     
     
 </web-app>
